@@ -8,23 +8,19 @@ from fusions.apply import apply
 
 
 def main(model_name: str, fusion_types: list[str], mode: str):
+    # Load and trace the model
     model = BertModel.from_pretrained(model_name)
     traced = symbolic_trace(
         model,
         input_names=["input_ids", "attention_mask"],
     )
-    # print(traced)
 
+    # Apply the optimizations specified by the fusion_types
     optimized_model = apply(traced, fusion_types)
-    # print(optimized_model)
 
+    # Create sample inputes to use, then either verify or benchmark the model
     input_ids = torch.randint(0, 30522, (1, 512))
     attention_mask = torch.ones(1, 512)
-
-    original_output = model(input_ids=input_ids, attention_mask=attention_mask)
-    optimized_output = optimized_model(
-        input_ids=input_ids, attention_mask=attention_mask
-    )
 
     if mode == "verify":
         original_output = model(input_ids=input_ids, attention_mask=attention_mask)
