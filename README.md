@@ -27,4 +27,3 @@ By providing optimizations as a space separated list, you can apply them in sequ
 ## Supported Models
 
 This tool uses the [BertModel](https://huggingface.co/docs/transformers/model_doc/bert#transformers.BertModel) from huggingface and supports all models implementing this class. 
-
